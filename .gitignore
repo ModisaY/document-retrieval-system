@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+
+# Django
+db.sqlite3
+*.pot
+local_settings.py
+
+# React
+node_modules/
+build/
+dist/
+
+# Environment
+.env
+
+# Mac / Windows system files
+.DS_Store
+Thumbs.db
