@@ -1,5 +1,6 @@
 from django.db import models
 
+# Model representing a document in the system
 class Document(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
@@ -8,6 +9,7 @@ class Document(models.Model):
     def __str__(self):
         return self.title
 
+# Model representing an entry in the inverted index
 class InvertedIndex(models.Model):
     term = models.CharField(max_length=255)
     document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='index_entries')
@@ -22,4 +24,5 @@ class InvertedIndex(models.Model):
         ]
     
     def __str__(self):
+        # String representation shows which term is in which document
         return f"{self.term} in {self.document.title}"

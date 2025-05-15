@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+// Page for searching documents and displaying results
 function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Handles the search form submission
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim()) return;

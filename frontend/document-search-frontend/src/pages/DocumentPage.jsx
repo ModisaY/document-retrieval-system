@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// Page to display a single document's full content
 function DocumentPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [document, setDocument] = useState(null);
 
+  // Fetch document data when component mounts or id changes
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/api/document/${id}/`)

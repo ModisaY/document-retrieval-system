@@ -2,15 +2,18 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// Page for uploading a new text document
 function UploadPage() {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
 
+  // Handles file input change
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
+  // Handles the upload form submission
   const handleUpload = async (e) => {
     e.preventDefault();
 

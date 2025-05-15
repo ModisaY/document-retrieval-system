@@ -4,7 +4,7 @@ from collections import defaultdict
 from django.core.cache import cache
 from .models import Document, InvertedIndex
 
-# Load spaCy model
+# Load spaCy model for NLP processing
 nlp = spacy.load("en_core_web_sm")
 
 def process_text(text):
@@ -20,9 +20,9 @@ def calculate_document_length(doc_content):
 
 def build_inverted_index(document_id=None):
     """
-    Build or update the inverted index
-    If document_id is provided, only update for that document
-    Otherwise, rebuild the entire index
+    Build or update the inverted index.
+    If document_id is provided, only update for that document.
+    Otherwise, rebuild the entire index.
     """
     if document_id:
         documents = Document.objects.filter(id=document_id)
@@ -31,11 +31,11 @@ def build_inverted_index(document_id=None):
         documents = Document.objects.all()
         InvertedIndex.objects.all().delete()
     
-    term_doc_freq = defaultdict(set)
-    doc_lengths = {}
+    term_doc_freq = defaultdict(set)  # Track which docs contain each term
+    doc_lengths = {}  # Store length of each document
     
     for doc in documents:
-        tokens = process_text(doc.content)  # Lemmatized tokens!
+        tokens = process_text(doc.content)  # Lemmatized tokens
         doc_lengths[doc.id] = len(tokens)
         
         term_freq = defaultdict(int)
@@ -53,6 +53,7 @@ def build_inverted_index(document_id=None):
     
     total_docs = Document.objects.count()
     
+    # Calculate and update TF-IDF for each term-document pair
     for term, doc_ids in term_doc_freq.items():
         df = len(doc_ids)
         idf = math.log(total_docs / (df + 1))
@@ -65,7 +66,6 @@ def build_inverted_index(document_id=None):
     
     clear_search_cache()
 
-
 def clear_search_cache():
     """Clear all search-related cache entries"""
     cache_keys = [key for key in cache._cache.keys() if key.startswith('search_')]
@@ -74,8 +74,8 @@ def clear_search_cache():
 
 def search_documents(query, limit=10):
     """
-    Search documents based on query terms
-    Returns ranked results with relevance scores
+    Search documents based on query terms.
+    Returns ranked results with relevance scores.
     """
     cache_key = f"search_{query}_{limit}"
     cached_results = cache.get(cache_key)
@@ -87,7 +87,7 @@ def search_documents(query, limit=10):
     if not query_tokens:
         return []
     
-    # Score documents
+    # Score documents based on TF-IDF
     doc_scores = defaultdict(float)
     for token in query_tokens:
         indices = InvertedIndex.objects.filter(term=token)
@@ -95,10 +95,10 @@ def search_documents(query, limit=10):
             # Add TF-IDF score for this term to document's total score
             doc_scores[index.document.id] += index.tf_idf
     
-    # Rank documents by score
+    # Rank documents by score and limit results
     ranked_docs = sorted(doc_scores.items(), key=lambda x: x[1], reverse=True)[:limit]
     
-    # Get document details
+    # Get document details for results
     results = []
     for doc_id, score in ranked_docs:
         doc = Document.objects.get(id=doc_id)
@@ -113,8 +113,8 @@ def search_documents(query, limit=10):
             'match_terms': list(set(t for t in query_tokens if InvertedIndex.objects.filter(term=t, document_id=doc_id).exists()))
         })
     
-    # Cache results
-    cache.set(cache_key, results, 300)  # Cache for 5 minutes
+    # Cache results for 5 minutes
+    cache.set(cache_key, results, 300)
     return results
 
 def get_highlight_context(content, query_terms, context_size=50):

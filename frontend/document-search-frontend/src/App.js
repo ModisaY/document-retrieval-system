@@ -5,6 +5,7 @@ import UploadPage from "./pages/UploadPage";
 import DocumentPage from "./pages/DocumentPage";
 import Navbar from "./components/Navbar";
 
+// Main App component that sets up routing
 function App() {
   return (
     <Router>
