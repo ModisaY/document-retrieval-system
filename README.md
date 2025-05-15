@@ -22,14 +22,6 @@ An efficient keyword-based Document Retrieval System that allows users to upload
 * User-friendly frontend for search and upload
 * Clean project architecture
 
-## Screenshots
-
-![Swagger UI Screenshot](#)
-![Search Frontend Screenshot](#)
-![Upload Document Frontend Screenshot](#)
-
-*(You can replace # with your actual image links if hosted or local paths.)*
-
 ## Architecture
 
 ```
@@ -99,6 +91,35 @@ Visit `http://localhost:3000/` to use the React frontend.
 * **GET** `/api/search/?q=keyword` - Search documents
 * **POST** `/api/rebuild-index/` - Rebuild the full inverted index
 
+## Indexing and Search Implementation Details
+
+* **Text Processing**:
+  Documents are preprocessed using spaCy, including:
+
+  * Lowercasing
+  * Removing stopwords
+  * Lemmatization (e.g., 'running' → 'run')
+
+* **Building Inverted Index**:
+  An inverted index is created where each term maps to documents it appears in.
+  Frequency of each term is stored to calculate Term Frequency (TF).
+
+* **TF-IDF Scoring**:
+
+  * **TF (Term Frequency)**: How often a term appears in a document.
+  * **IDF (Inverse Document Frequency)**: How rare a term is across all documents.
+  * The final TF-IDF score = TF × IDF.
+
+* **Search Workflow**:
+
+  1. User query is tokenized and lemmatized.
+  2. Tokens are matched against the inverted index.
+  3. Documents are scored and ranked by their cumulative TF-IDF scores.
+  4. Top N documents are returned based on relevance.
+
+* **Caching**:
+  Frequently repeated search queries are cached for faster retrieval without recalculating.
+
 ## Deployment
 
 You can deploy this project using:
@@ -122,11 +143,11 @@ document-retrieval-system/
 │       ├── urls.py
 │       ├── wsgi.py
 │   ├── document_search/
+│       ├── migrations/
 │       ├── models.py
 │       ├── views.py
 │       ├── utils.py
 │       ├── urls.py
-│       ├── migrations/
 ├── frontend/
     ├── document-search-frontend/
         ├── src/
@@ -148,3 +169,4 @@ Distributed under the BSD 3-Clause License.
 * **Email**: [modisanallaperum@gmail.com](mailto:modisanallaperum@gmail.com)
 
 ---
+
