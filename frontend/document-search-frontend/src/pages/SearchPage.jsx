@@ -1,5 +1,5 @@
-// src/pages/SearchPage.jsx
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 function SearchPage() {
@@ -35,6 +35,7 @@ function SearchPage() {
         🔍 Document Search
       </h1>
 
+      {/* Search Form */}
       <form
         onSubmit={handleSearch}
         style={{
@@ -74,6 +75,7 @@ function SearchPage() {
         </button>
       </form>
 
+      {/* Search Results */}
       {loading ? (
         <div style={{ textAlign: "center", fontSize: "18px" }}>
           Searching...
@@ -92,10 +94,20 @@ function SearchPage() {
                   boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
                 }}
               >
-                <h2 style={{ color: "#007bff" }}>{doc.title}</h2>
+                {/* Clickable Title */}
+                <Link
+                  to={`/document/${doc.id}`}
+                  style={{ textDecoration: "none", color: "#007bff" }}
+                >
+                  <h2>{doc.title}</h2>
+                </Link>
+
+                {/* Content Preview */}
                 <p style={{ color: "#555", marginBottom: "10px" }}>
                   {doc.content_preview}
                 </p>
+
+                {/* TF-IDF Score */}
                 <p style={{ fontWeight: "bold", color: "#333" }}>
                   Score: {doc.score}
                 </p>
