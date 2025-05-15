@@ -8,9 +8,9 @@ An efficient keyword-based Document Retrieval System that allows users to upload
 
 * **Backend**: Django 4.2.10
 * **Frontend**: React.js
-* **Database**: MySQL 8.0 (or MariaDB 10.5+)
-* **API Documentation**: Swagger (drf-yasg)
-* **Text Processing**: spaCy (English Model)
+* **Database**: MySQL 8.0 
+* **API Documentation**: Swagger 
+* **Text Processing**: spaCy 
 
 ## Features
 
@@ -120,43 +120,34 @@ Visit `http://localhost:3000/` to use the React frontend.
 * **Caching**:
   Frequently repeated search queries are cached for faster retrieval without recalculating.
 
-## Deployment
-
-You can deploy this project using:
-
-* **Backend**: Render, Railway, Heroku
-* **Frontend**: Vercel, Netlify
-
-Deployment tips:
-
-* Use managed MySQL hosting (like PlanetScale) in production.
-* Set up CORS policy in Django settings.
-* Use environment variables for Django `SECRET_KEY`, DB credentials.
 
 ## Project Structure (Tree View)
 
 ```
-document-retrieval-system/
-├── backend/
-│   ├── doc_retrieval_system/
-│       ├── settings.py
-│       ├── urls.py
-│       ├── wsgi.py
-│   ├── document_search/
-│       ├── migrations/
-│       ├── models.py
-│       ├── views.py
-│       ├── utils.py
-│       ├── urls.py
-├── frontend/
-    ├── document-search-frontend/
-        ├── src/
+├── backend
+│   └── doc_retrieval_system
+│       ├── manage.py
+│       ├── doc_retrieval_system
+│       │   ├── settings.py
+│       │   ├── urls.py
+│       │   ├── wsgi.py      
+│       ├── document_search
+│       │   ├── migrations/
+│       │   ├── models.py
+│       │   ├── views.py
+│       │   ├── urls.py
+│       │   └── utils.py
+└── frontend
+    └── document-search-frontend
+        ├── package.json
+        └── src
             ├── App.js
-            ├── pages/
+            ├── components
+            │   └── Navbar.jsx
+            └── pages
+                ├── DocumentPage.jsx
                 ├── SearchPage.jsx
-                ├── UploadPage.jsx
-            ├── components/
-                ├── Navbar.jsx
+                └── UploadPage.jsx
 ```
 
 ## License
@@ -169,4 +160,3 @@ Distributed under the BSD 3-Clause License.
 * **Email**: [modisanallaperum@gmail.com](mailto:modisanallaperum@gmail.com)
 
 ---
-
